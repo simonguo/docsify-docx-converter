@@ -28,14 +28,36 @@ const defaultConfig = {
   /**
    * Path where docx will stored
    */
-  pathToPublic: './README.docx'
+  pathToPublic: './README.docx',
+
+  /** The title of the cover page. */
+  coverTitle: null,
+
+  /** The style of the body. */
+  bodyStyles: 'font-family: 微软雅黑;',
+
+  /** landscape or portrait (default) */
+  orientation: 'portrait',
+
+  /** map of margin sizes
+   * expressed in twentieths of point, see WordprocessingML documentation for details):
+   * http://officeopenxml.com/WPSectionPgMar.php
+   * */
+  margins: {}
 };
 
 async function run(config) {
-  const { rootPath, titleDowngrade, contents, imgMaxWidth, pathToPublic } = merge(
-    defaultConfig,
-    config
-  );
+  const {
+    rootPath,
+    titleDowngrade,
+    contents,
+    imgMaxWidth,
+    pathToPublic,
+    coverTitle,
+    bodyStyles,
+    margins,
+    orientation
+  } = merge(defaultConfig, config);
 
   try {
     const contentsStr = fs.readFileSync(contents, 'utf8').toString();
@@ -44,7 +66,7 @@ async function run(config) {
       .match(/\(([a-zA-Z0-9./_]+)\)/gi)
       ?.map(item => item.match(/\(([a-zA-Z0-9./_]+)\)/)?.[1]);
 
-    const htmlArr = [`<h1 style="text-align: center;">${pathToPublic}</h1>`];
+    const htmlArr = [coverTitle];
 
     for (let i = 0; i < mdFiles.length; i++) {
       const md = mdFiles[i];
@@ -60,7 +82,12 @@ async function run(config) {
       htmlArr.push(html);
     }
 
-    fs.writeFileSync(pathToPublic, html2Docx.asBlob(createHTMLDocument(htmlArr.join('<br/>'))));
+    const html = createHTMLDocument(htmlArr.join('<br/>'), bodyStyles);
+
+    fs.writeFileSync(
+      pathToPublic,
+      html2Docx.asBlob(html, { orientation, margins })
+    );
 
     console.log('\n', chalk.green(`😄 转换成功: ${pathToPublic}`), '\n');
   } catch (e) {
@@ -94,10 +121,18 @@ function mdToHtml(options) {
 
         if (dimensions.width > imgMaxWidth) {
           $(img).attr('width', imgMaxWidth);
-          $(img).attr('height', Math.floor((dimensions.height / dimensions.width) * imgMaxWidth));
+          $(img).attr(
+            'height',
+            Math.floor((dimensions.height / dimensions.width) * imgMaxWidth)
+          );
         }
-
         $(img).attr('src', imgToBase64(imgSrc));
+      });
+
+      $('table').each((_i, table) => {
+        $(table).attr('border', 1);
+        $(table).attr('cellspacing', 0);
+        $(table).attr('cellpadding', 0);
       });
 
       resolve($.html());

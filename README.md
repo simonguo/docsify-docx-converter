@@ -11,7 +11,7 @@ npm install --save-dev docsify-docx-converter
 
 ## Usage
 
-Create config file `docsify-docx-converter.config.js` in your project root directory.
+Create config file `.docsifytodocxrc.js` in your project root directory.
 
 ```js
 module.exports = {
@@ -31,7 +31,22 @@ module.exports = {
    * The maximum width of the image in the document, and the height will be adaptive according to the width.
    * The default is 468, which is the maximum width of a word document.
    */
-  imgMaxWidth: 468
+  imgMaxWidth: 468,
+
+  /** The title of the cover page. */
+  coverTitle: null,
+
+  /** The style of the body. */
+  bodyStyles: 'font-family: 微软雅黑;',
+
+  /** landscape or portrait (default) */
+  orientation: 'portrait',
+
+  /** map of margin sizes
+   * expressed in twentieths of point, see WordprocessingML documentation for details):
+   * http://officeopenxml.com/WPSectionPgMar.php
+   * */
+  margins: {}
 };
 ```
 
