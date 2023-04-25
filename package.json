@@ -1,0 +1,44 @@
+{
+  "name": "docsify-docx-converter",
+  "version": "0.1.0",
+  "description": "A tool for building docx based on your docsify project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/simonguo/docsify-docx-converter.git"
+  },
+  "keywords": [
+    "docsify",
+    "docx",
+    "word",
+    "converter",
+    "cli"
+  ],
+  "author": {
+    "name": "Simon Guo",
+    "email": "simonguo.2009@gmail.com",
+    "url": "https://github.com/simonguo"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/simonguo/docsify-docx-converter/issues"
+  },
+  "homepage": "https://github.com/simonguo/docsify-docx-converter#readme",
+  "bin": {
+    "converter": ".bin/cli.js",
+    "docsify-docx-converter": ".bin/cli.js"
+  },
+  "dependencies": {
+    "chalk": "4.1.2",
+    "cheerio": "1.0.0-rc.12",
+    "html-docx-js": "^0.3.1",
+    "image-size": "^1.0.2",
+    "lodash": "^4.17.21",
+    "marked": "^4.3.0",
+    "package": "^1.0.1",
+    "rcfile": "^1.0.3"
+  }
+}
