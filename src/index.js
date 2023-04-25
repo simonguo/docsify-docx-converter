@@ -59,6 +59,12 @@ async function run(config) {
     orientation
   } = merge(defaultConfig, config);
 
+  console.log(chalk.bold('Build with settings:'));
+  console.log(chalk.bgBlue(JSON.stringify(config, null, 2)));
+  console.log('\n');
+
+  console.log(chalk.bold('Build markdown files:'));
+
   try {
     const contentsStr = fs.readFileSync(contents, 'utf8').toString();
 
@@ -89,7 +95,11 @@ async function run(config) {
       html2Docx.asBlob(html, { orientation, margins })
     );
 
-    console.log('\n', chalk.green(`😄 转换成功: ${pathToPublic}`), '\n');
+    console.log(
+      '\n',
+      chalk.bold.bgGreen(` 😄 SUCCESS: ${pathToPublic} `),
+      '\n'
+    );
   } catch (e) {
     console.error(e);
   }
