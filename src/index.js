@@ -7,7 +7,7 @@ const sizeOf = require('image-size');
 const chalk = require('chalk');
 const merge = require('lodash/merge');
 
-const { createHTMLDocument, imgToBase64 } = require('./utils');
+const { createHTMLDocument, imgToBase64, blobToBuffer } = require('./utils');
 
 const defaultConfig = {
   /** "table of contents" file path */
@@ -89,11 +89,11 @@ async function run(config) {
     }
 
     const html = createHTMLDocument(htmlArr.join('<br/>'), bodyStyles);
-
-    fs.writeFileSync(
-      pathToPublic,
+    const buffer = await blobToBuffer(
       html2Docx.asBlob(html, { orientation, margins })
     );
+
+    fs.writeFileSync(pathToPublic, buffer);
 
     console.log(
       '\n',
@@ -105,7 +105,7 @@ async function run(config) {
   }
 }
 
-function mdToHtml(options) {
+async function mdToHtml(options) {
   const { rootPath, titleDowngrade, imgMaxWidth, filePath } = options;
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, 'utf8', function (err, file) {

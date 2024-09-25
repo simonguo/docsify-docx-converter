@@ -12,10 +12,18 @@ const createHTMLDocument = (body, bodyStyles) => {
 
 const imgToBase64 = imgPath => {
   let bitmap = fs.readFileSync(imgPath);
-  return 'data:image/png;base64,' + Buffer.from(bitmap, 'binary').toString('base64');
+  return (
+    'data:image/png;base64,' + Buffer.from(bitmap, 'binary').toString('base64')
+  );
 };
+
+async function blobToBuffer(blob) {
+  const arrayBuffer = await blob.arrayBuffer();
+  return Buffer.from(arrayBuffer);
+}
 
 module.exports = {
   createHTMLDocument,
-  imgToBase64
+  imgToBase64,
+  blobToBuffer
 };
