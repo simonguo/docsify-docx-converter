@@ -1,6 +1,6 @@
 {
   "name": "docsify-docx-converter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A tool for building docx based on your docsify project",
   "main": "index.js",
   "scripts": {
